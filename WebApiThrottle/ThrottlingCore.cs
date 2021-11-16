@@ -11,7 +11,7 @@ namespace WebApiThrottle
     /// <summary>
     /// Common code shared between ThrottlingHandler and ThrottlingFilter
     /// </summary>
-    internal class ThrottlingCore
+    public class ThrottlingCore
     {
         public ThrottlingCore()
         {
@@ -20,28 +20,28 @@ namespace WebApiThrottle
 
         private static readonly object ProcessLocker = new object();
 
-        internal ThrottlePolicy Policy { get; set; }
+        public ThrottlePolicy Policy { get; set; }
 
-        internal IThrottleRepository Repository { get; set; }
+        public IThrottleRepository Repository { get; set; }
 
-        internal IIpAddressParser IpAddressParser { get; set; }
+        public IIpAddressParser IpAddressParser { get; set; }
 
-        internal bool ContainsIp(List<string> ipRules, string clientIp)
+        public bool ContainsIp(List<string> ipRules, string clientIp)
         {
             return IpAddressParser.ContainsIp(ipRules, clientIp);
         }
 
-        internal bool ContainsIp(List<string> ipRules, string clientIp, out string rule)
+        public bool ContainsIp(List<string> ipRules, string clientIp, out string rule)
         {
             return IpAddressParser.ContainsIp(ipRules, clientIp, out rule);
         }
 
-        internal IPAddress GetClientIp(HttpRequestMessage request)
+        public IPAddress GetClientIp(HttpRequestMessage request)
         {
             return IpAddressParser.GetClientIp(request);
         }
 
-        internal ThrottleLogEntry ComputeLogEntry(string requestId, RequestIdentity identity, ThrottleCounter throttleCounter, string rateLimitPeriod, long rateLimit, HttpRequestMessage request)
+        public ThrottleLogEntry ComputeLogEntry(string requestId, RequestIdentity identity, ThrottleCounter throttleCounter, string rateLimitPeriod, long rateLimit, HttpRequestMessage request)
         {
             return new ThrottleLogEntry
             {
@@ -58,7 +58,7 @@ namespace WebApiThrottle
             };
         }
 
-        internal string RetryAfterFrom(DateTime timestamp, RateLimitPeriod period)
+        public string RetryAfterFrom(DateTime timestamp, RateLimitPeriod period)
         {
             var secondsPast = Convert.ToInt32((DateTime.UtcNow - timestamp).TotalSeconds);
             var retryAfter = 1;
@@ -81,7 +81,7 @@ namespace WebApiThrottle
             return retryAfter.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        internal bool IsWhitelisted(RequestIdentity requestIdentity)
+        public bool IsWhitelisted(RequestIdentity requestIdentity)
         {
             if (requestIdentity.ForceWhiteList)
             {
@@ -116,7 +116,7 @@ namespace WebApiThrottle
             return false;
         }
 
-        internal string ComputeThrottleKey(RequestIdentity requestIdentity, RateLimitPeriod period)
+        public string ComputeThrottleKey(RequestIdentity requestIdentity, RateLimitPeriod period)
         {
             var keyValues = new List<string>()
                 {
@@ -154,7 +154,7 @@ namespace WebApiThrottle
             return hex;
         }
 
-        internal List<KeyValuePair<RateLimitPeriod, long>> RatesWithDefaults(List<KeyValuePair<RateLimitPeriod, long>> defRates)
+        public List<KeyValuePair<RateLimitPeriod, long>> RatesWithDefaults(List<KeyValuePair<RateLimitPeriod, long>> defRates)
         {
             if (!defRates.Any(x => x.Key == RateLimitPeriod.Second))
             {
@@ -184,7 +184,7 @@ namespace WebApiThrottle
             return defRates;
         }
 
-        internal ThrottleCounter ProcessRequest(TimeSpan timeSpan, string id)
+        public ThrottleCounter ProcessRequest(TimeSpan timeSpan, string id)
         {
             var throttleCounter = new ThrottleCounter()
             {
@@ -220,7 +220,7 @@ namespace WebApiThrottle
             return throttleCounter;
         }
 
-        internal TimeSpan GetTimeSpanFromPeriod(RateLimitPeriod rateLimitPeriod)
+        public TimeSpan GetTimeSpanFromPeriod(RateLimitPeriod rateLimitPeriod)
         {
             var timeSpan = TimeSpan.FromSeconds(1);
 
@@ -246,7 +246,7 @@ namespace WebApiThrottle
             return timeSpan;
         }
 
-        internal void ApplyRules(RequestIdentity identity, TimeSpan timeSpan, RateLimitPeriod rateLimitPeriod, ref long rateLimit)
+        public void ApplyRules(RequestIdentity identity, TimeSpan timeSpan, RateLimitPeriod rateLimitPeriod, ref long rateLimit)
         {
             // apply endpoint rate limits
             if (Policy.EndpointRules != null)
