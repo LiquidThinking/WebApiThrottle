@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LiquidThinking.WebApiThrottle")]
+[assembly: AssemblyTitle("WebApiThrottle")]
 [assembly: AssemblyDescription("Throttling handler and filter for ASP.NET Web API v2")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("stefanprodan.com")]
-[assembly: AssemblyProduct("LiquidThinking.WebApiThrottle")]
+[assembly: AssemblyProduct("WebApiThrottle")]
 [assembly: AssemblyCopyright("Copyright Stefan Prodan © 2013-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
